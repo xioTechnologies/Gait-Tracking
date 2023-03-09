@@ -33,11 +33,12 @@ axes[1].set_ylabel("g")
 axes[1].grid()
 axes[1].legend()
 
-# Intantiate AHRS algorithms
+# Instantiate AHRS algorithms
 offset = imufusion.Offset(sample_rate)
 ahrs = imufusion.Ahrs()
 
-ahrs.settings = imufusion.Settings(0.5,  # gain
+ahrs.settings = imufusion.Settings(imufusion.CONVENTION_NWU,
+                                   0.5,  # gain
                                    10,  # acceleration rejection
                                    0,  # magnetic rejection
                                    5 * sample_rate)  # rejection timeout = 5 seconds
