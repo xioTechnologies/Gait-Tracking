@@ -39,6 +39,7 @@ ahrs = imufusion.Ahrs()
 
 ahrs.settings = imufusion.Settings(imufusion.CONVENTION_NWU,
                                    0.5,  # gain
+                                   2000,  # gyroscope range
                                    10,  # acceleration rejection
                                    0,  # magnetic rejection
                                    5 * sample_rate)  # rejection timeout = 5 seconds
@@ -60,7 +61,7 @@ for index in range(len(timestamp)):
     ahrs_internal_states = ahrs.internal_states
     internal_states[index] = numpy.array([ahrs_internal_states.acceleration_error,
                                           ahrs_internal_states.accelerometer_ignored,
-                                          ahrs_internal_states.acceleration_rejection_timer])
+                                          ahrs_internal_states.acceleration_recovery_trigger])
 
     acceleration[index] = 9.81 * ahrs.earth_acceleration  # convert g to m/s/s
 
@@ -84,7 +85,7 @@ pyplot.yticks([0, 1], ["False", "True"])
 axes[4].grid()
 axes[4].legend()
 
-axes[5].plot(timestamp, internal_states[:, 2], "tab:orange", label="Acceleration rejection timer")
+axes[5].plot(timestamp, internal_states[:, 2], "tab:orange", label="Acceleration recovery trigger")
 axes[5].set_xlabel("Seconds")
 axes[5].grid()
 axes[5].legend()
